@@ -1,0 +1,36 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E8QT32ZNV7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-E8QT32ZNV7');
+    </script>
+    {{ super() }}
+{% endblock %}
+
+{% block header %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+{% endblock %}
+
+{% block footer %}
+    <div class="extrafooter">
+        <a href="https://github.com/CyberAgentAILab/visual-localization-documentation">
+            https://github.com/CyberAgentAILab/visual-localization-documentation
+        </a>
+    </div>
+    <div class="extrafooter">
+        This work is licensed under a
+        <a href="http://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International License
+        </a>
+    </div>
+    {{ super() }}
+{% endblock %}
