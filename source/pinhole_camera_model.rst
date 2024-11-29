@@ -148,7 +148,7 @@
    g &= f \frac{X}{Z} \\
    h &= f \frac{Y}{Z} \\
 
-さて、これまでの議論により、物体の像の座標を :eq:`image_focal_length_relationship` で表現できるようになりました。このままでも十分ピンホールカメラの機構を十分に表現できているのですが、実用上はもう少しだけやることがあります。
+これまでの議論により、物体の像の座標を :eq:`image_focal_length_relationship` で表現できるようになりました。このままでも十分ピンホールカメラの機構を十分に表現できているのですが、実用上はもう少しだけやることがあります。
 
 
 .. figure:: ../assets/object_location_in_image.png
