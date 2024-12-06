@@ -1,3 +1,5 @@
+.. _pinhole_camera_model:
+
 ピンホールカメラモデル
 ======================
 
@@ -37,13 +39,13 @@
 
 .. figure:: ../assets/lens_camera_close.png
    :name: lens_camera_close
-   :width: 60%
+   :width: 80%
 
    近くのものは大きく写る
 
 .. figure:: ../assets/lens_camera_far.png
    :name: lens_camera_far
-   :width: 60%
+   :width: 80%
 
    遠くのものは小さく写る
 
@@ -52,13 +54,13 @@
 
 .. figure:: ../assets/pinhole_camera_close.png
    :name: pinhole_camera_close
-   :width: 60%
+   :width: 80%
 
    レンズを小さな穴に置き換えても、近くのものは大きく写る
 
 .. figure:: ../assets/pinhole_camera_far.png
    :name: pinhole_camera_far
-   :width: 60%
+   :width: 80%
 
    レンズを小さな穴に置き換えても、遠くのものは小さく写る
 
@@ -70,7 +72,7 @@
 
 .. figure:: ../assets/pinhole_camera_screen_position.png
    :name: pinhole_camera_screen_position
-   :width: 60%
+   :width: 80%
 
    フィルムが穴の近くにあると、像は小さく写る。フィルムが穴の遠くにあると、像が大きく写る。
 
@@ -83,7 +85,7 @@
 
 .. figure:: ../assets/projection_relationship.png
    :name: projection_relationship
-   :width: 60%
+   :width: 80%
 
    フィルムまでの距離とフィルムに写る像の大きさの関係
 
@@ -111,7 +113,7 @@
 
 .. figure:: ../assets/projection_xy_screen_back_human.png
    :name: projection_xy_screen_back_human
-   :width: 60%
+   :width: 80%
 
    X軸とY軸の両方についての投影を表した図
 
@@ -134,7 +136,7 @@
 
 .. figure:: ../assets/projection_xy_screen_front_human.png
    :name: projection_xy_screen_front_human
-   :width: 60%
+   :width: 80%
 
    スクリーンを前に持ってきても、 :math:`g = f \frac{X}{Z},\; h = f \frac{Y}{Z}` が成り立つ。
 
@@ -160,7 +162,7 @@
 
 .. figure:: ../assets/2d_3d_relationship_pinhole_camera.png
    :name: 2d_3d_relationship_pinhole_camera
-   :width: 60%
+   :width: 80%
 
    3次元点とその像の関係
 
@@ -169,7 +171,7 @@
 
 .. figure:: ../assets/image_coordinate_vs_world_coordinate.png
    :name: image_coordinate_vs_world_coordinate
-   :width: 60%
+   :width: 80%
 
    物体座標を用いた像の位置の表現(青)と画像のピクセルによる表現(赤)
 
@@ -179,24 +181,140 @@
 
 .. figure:: ../assets/introduction_of_image_offsets.png
    :name: introduction_of_image_offsets
-   :width: 60%
+   :width: 80%
 
    オフセット :math:`c_{x},\; c_{y}` を導入し、画像中の物体の座標を :math:`(X,\; Y,\; Z)` によって記述できるようにする。
 
 ここで導入されるのが、 :numref:`introduction_of_image_offsets` で示されるオフセット :math:`c_{x},\;c_{y}` です。これは画像の左上(図中の赤丸)を基準とした、画像面とZ軸の交点(図中の青丸)の位置を表しています。オフセット :math:`c_{x},\;c_{y}` を使うことで、 :math:`fX / Z,\; fY / Z` と :math:`u,\; v` という別々の値を関連付けることができます。
 
 .. math::
-   :label: introduction_of_image_offsets
+   :label: pinhole_camera_model_equation
 
    u &= f \frac{X}{Z} + c_{x} \\
    v &= f \frac{Y}{Z} + c_{y} \\
 
-:eq:`introduction_of_image_offsets` と :numref:`introduction_of_image_offsets` を見比べてみてください。たしかに成立していることがおわかりいただけると思います。これで無事に3次元点 :math:`(X,\,Y,\,Z)` とその像 :math:`(u,\, v)` を関連付ける数式を導出できました。
+:eq:`pinhole_camera_model_equation` と :numref:`introduction_of_image_offsets` を見比べてみてください。たしかに成立していることがおわかりいただけると思います。これで無事に3次元点 :math:`(X,\,Y,\,Z)` とその像 :math:`(u,\, v)` を関連付ける数式を導出できました。これがピンホールカメラモデルの基礎となる式です。
 
-XYで別々の焦点距離を使う
-~~~~~~~~~~~~~~~~~~~~~~~~
+画像上の位置の表現
+~~~~~~~~~~~~~~~~~~
 
-実世界のデータでは画像の縦方向と横方向で別々の値の焦点距離を使うことがあるので、 :eq:`x_y_individual_focal_length` のように縦方向と横方向に別々の値 :math:`f_{x},\,f_{y}` を用いることにしましょう。画像の縦方向と横方向で異なる焦点距離を持つことなどあり得るのかと思うかもしれません。実際のところ、実世界のデータを扱う場合でもほとんどの場合において :math:`f_{x} = f_{y}` で済むのですが、たとえば撮像素子の解像度が画像の縦方向と横方向で異なるなどの特殊なケースでは :math:`f_{x} \neq f_{y}` となり得ます。
+ピンホールカメラモデルの基本的な式を導出できました。皆さんはすでに、3次元点の座標 :math:`(X,\; Y,\; Z)` とパラメータ :math:`f,\;c_{x},\;c_{y}` さえ与えられれば、3次元点をカメラに投影したときの座標 :math:`(u,\;v)` を :eq:`pinhole_camera_model_equation` を使って計算することができます。
+
+では実用上はどうでしょうか？実世界のデータを扱う際には単位に気をつける必要がありますね。実際に3次元復元を行う際には、3次元点の位置を「メートル」という単位で表したり、像の位置を「ピクセル」という単位で表したりする必要が出てきます。このため、ここからは :eq:`pinhole_camera_model_equation` に対して明確に単位を与える操作を行っていきます。
+
+一眼レフカメラなどを扱ったことがある方なら、「焦点距離」という単語を目にした際にピンときたと思います。そう、レンズの焦点距離です。一眼レフカメラのレンズには :numref:`dslr_camera_50mm_lens` のように焦点距離が記載されています。
+
+.. figure:: ../assets/dslr_camera_50mm_lens.jpg
+   :width: 60%
+   :name: dslr_camera_50mm_lens
+
+   一眼レフカメラのレンズ。50という数字は焦点距離が50mmであることを示している。
+
+これを踏まえて改めてピンホールカメラモデルの式を見てみましょう。
+
+.. math::
+   u &= f \frac{X}{Z} + c_{x} \\
+   v &= f \frac{Y}{Z} + c_{y} \\
+
+仮に焦点距離 :math:`f` として50ミリメートルという値を採用するのであれば、オフセット :math:`c_{x},\;c_{y}` もそれに合わせてミリメートルで表記する必要があります。
+
+
+.. figure:: ../assets/dslr_camera_body.jpg
+   :width: 60%
+   :name: dslr_camera_body
+
+   一眼レフカメラの本体。円の中に見える長方形の部分が撮像素子であり、通常は縦24ミリメートル、横36ミリメートルのサイズで作られている。
+
+:numref:`dslr_camera_body` のように、一眼レフカメラは通常横36ミリメートル、縦24ミリメートルの撮像素子を備えています。 一般的にはカメラはレンズの中心位置が撮像素子の中心にくるように設計されているので、一眼レフカメラのオフセットはX方向に横幅の半分の18ミリメートル、Y方向に縦幅の半分の12ミリメートルと設定されるはずです。
+
+これをピンホールカメラモデルの式に代入してみましょう。
+
+.. math::
+   u &= 50 \frac{X}{Z} + 18 \quad &&\text{[mm]} \\
+   v &= 50 \frac{Y}{Z} + 12 \quad &&\text{[mm]} \\
+
+.. figure:: ../assets/camera_and_its_coordinate.jpg
+   :name: camera_and_its_coordinate
+
+   実際のカメラと座標系の比較。 :math:`u` と :math:`v` という値は、カメラを背後から見たときに、像が撮像素子のどこに写るのかを表す。
+
+右辺と左辺は同じ単位を持っていなければなりません。:math:`X / Z` や  :math:`Y / Z` は同じ単位同士で比をとっているため、式全体の単位には影響を及ぼしません。したがって、右辺の値がミリメートルという単位で表されていることを踏まえると、左辺の :math:`u` や :math:`v` もそれぞれミリメートルで表現されなければならないことがわかります。では、ミリメートルという単位で表現された :math:`u,\;v` という値は、いったい何を表しているでしょうか？これは **撮像素子上の** どこに像が写っているかを表現しています。 :numref:`camera_and_its_coordinate` のようにカメラを背後から見てみましょう。:math:`u` と :math:`v` という値は、撮像素子の左上を基準として、右方向に :math:`u` ミリメートル、下方向に :math:`v` ミリメートルのところに像が写ることを表すのです(ただし実際には像は反転して写るので、撮像素子の右下を基準として左に :math:`u` ミリメートル、上に :math:`v` ミリメートルのところに写ります)。焦点距離もオフセットもカメラのレンズや撮像素子というハードウェアの値をそのまま使っているので、:math:`u` と :math:`v` も撮像素子というハードウェアに基づいた値になるわけです。
+
+実際にひとつ例を示します。カメラから見て :math:`(X,\;Y,\;Z) = (20,\;-10,\;100)` メートルの位置にある物体を撮影したとき、その像の位置は次の計算式によって求められます。
+
+.. math::
+   u &= 50 \frac{20}{100} + 18 \\
+     &= 28 \quad \text{[mm]} \\
+   v &= 50 \frac{(-10)}{100} + 12 \\
+     &= 7  \quad \text{[mm]} \\
+
+:math:`X,\;Y,\;Z` はいずれもメートルで表現されていますが、 :math:`X` と :math:`Z` 、 :math:`Y` と :math:`Z` で比を計算しているので式全体の単位には影響を及ぼさないのです。
+
+計算結果より、物体の像は撮像素子の右下を基準として左に :math:`u = 28` ミリメートル、上に :math:`v = 7` ミリメートルの位置に投影されます。
+
+撮像素子と画素
+~~~~~~~~~~~~~~
+
+
+さて、先の計算によって、撮像素子上のどこに像が投影されるのかを特定することができました。しかし、実際の利用場面ではそれがどれほど役に立つでしょうか？私たちが本当に知りたいのは、「撮像素子上のどこに物体が写っているか」ではなく、「**画像内の** どこに物体の像が写っているか」ではないでしょうか。
+具体的には、撮像素子の左上（または右下）から何ミリメートルの位置に像が写るかを知りたいのではなく、画像の左上から何ピクセルの位置に像が写るかを知りたいのです。上の例では、焦点距離やオフセットの値をミリメートル単位で表現し、撮影素子上の像の位置 :math:`(u,\;v)` を求めました。しかし、実際には画像上の像の位置をピクセルという単位で求める必要があります。
+
+:math:`u` と :math:`v` をピクセルという単位で表現するためには、そもそもピクセルが何なのかをよく理解する必要がありますね。「ピクセル」という単位はカメラの撮像素子の構造に密接に関連しているので、撮像素子について詳しく見ていきましょう。
+
+.. figure:: ../assets/camera_pixel_closeup.png
+   :name: camera_pixel_closeup
+
+   撮像素子は画素の集合でできている。ここではわかりやすさのために画素のサイズを実際よりもかなり大きく描いている。実際の画素のサイズは数ミクロン四方であり、肉眼で見ることはできない。
+
+:numref:`camera_pixel_closeup` のように、カメラの撮像素子は、「画素」と呼ばれる光をとらえるための箱が何千万個も集まってできています。画素は入ってくる光の強さや色を識別することができ、この情報を画像の1ピクセルとして記録します。
+
+.. figure:: ../assets/waterfall_zoom.png
+   :name: waterfall_zoom
+
+   左側は滝の写真であり、数多くのピクセルで構成されている。通常の視点では個々のピクセルは見えず、全体として滑らかに見えるが、右側のように画像を拡大してみると、色のついた四角い点（ピクセル）で構成されていることがわかる。
+
+画素は無限に小さいわけではないので、撮像素子に含まれる画素の数も有限ですし、画像に含まれるピクセルの数も有限です。:numref:`waterfall_zoom` のように画像を拡大すると、画素ひとつ1つが捉えた光を見ることができます。このように、細かい光の単位がたくさん集まって写真になっているわけです。画像上の位置を、たとえば「左上から右に200ピクセル、下に500ピクセル」と表現したとき、これは左上からピクセルを右に200個、下に500個数えた場所を表します。
+
+内部行列のピクセルによる表現
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+我々はすでに、像の位置をミリメートルの単位で表現することができています。
+
+.. math::
+   :label: pinhole_camera_model_equation2
+
+   u &= f \frac{X}{Z} + c_{x} \\
+   v &= f \frac{Y}{Z} + c_{y} \\
+
+:eq:`pinhole_camera_model_equation2` は、 :math:`(X,\;Y,\;Z)` の位置にある物体を焦点距離 :math:`f` ミリメートル、オフセット :math:`(c_{x},\;c_{y})` のカメラで撮影すると、その像が撮像素子の右下から :math:`u` ミリメートル、上に :math:`v` ミリメートルの位置に写るということを表しているのでした。
+像の位置をピクセルで表現するには、撮像素子1ミリメートルあたりに含まれている画素の数をかければいいですよね。 :numref:`camera_pixel_closeup` のように画素ひとつの縦方向のサイズを :math:`k_{u}` ミリメートル、横方向のサイズを  :math:`k_{v}` ミリメートルとすると、撮像素子1ミリメートルあたりの画素の数は縦方向と横方向でそれぞれ :math:`1 / k_{u}` と :math:`1 / k_{v}` で表せます。これを両辺にかければよいので、像の位置は :math:`u` 方向と :math:`v` 方向でそれぞれ次のように表せます。
+
+.. math::
+   :label: pinhole_camera_model_divided_by_pixel_size
+
+   \frac{u}{k_{u}} &= \frac{f}{k_{u}}\frac{X}{Z} + \frac{c_{x}}{k_{u}} \\
+   \frac{v}{k_{v}} &= \frac{f}{k_{v}}\frac{Y}{Z} + \frac{c_{y}}{k_{v}} \\
+
+
+この式変形により、 :math:`(X,\;Y,\;Z)` の位置にある物体の像は画像の左上から右に :math:`u / k_{u}` ピクセル、下に :math:`v / k_{v}` ピクセルの位置に写るということがわかりました。
+
+:eq:`pinhole_camera_model_divided_by_pixel_size` は表現としては正確なのですが、このままでは少し読みづらいのでもう少し表記をシンプルにしてみます。
+
+:math:`f / k_{u}` と :math:`f / k_{v}` はそれぞれ :math:`f_{x}` と :math:`f_{y}` で置き換えてしまいましょう。
+
+.. math::
+   f_{x} &= \frac{f}{k_{u}} \\
+   f_{y} &= \frac{f}{k_{v}} \\
+
+また、像の位置 :math:`u` と :math:`v` をそれぞれ :math:`k_{u}` と :math:`k_{v}` で割ったものを :math:`u` と :math:`v` と思うことにしましょう。:math:`c_{x}` と :math:`c_{y}` についても同様のことを行います。
+
+.. math::
+   u &\leftarrow \frac{u}{k_{u}} \\
+   v &\leftarrow \frac{v}{k_{v}} \\
+   c_{x} &\leftarrow \frac{c_{x}}{k_{u}} \\
+   c_{y} &\leftarrow \frac{c_{y}}{k_{v}} \\
+
+以上の操作を行うと、 :eq:`pinhole_camera_model_divided_by_pixel_size` は :eq:`pinhole_camera_model_equation2` とほぼ同じシンプルな形になります。
 
 .. math::
    :label: x_y_individual_focal_length
@@ -204,7 +322,15 @@ XYで別々の焦点距離を使う
    u &= f_{x} \frac{X}{Z} + c_{x} \\
    v &= f_{y} \frac{Y}{Z} + c_{y} \\
 
-少々天下り的な説明になってしまうので少しイメージがつかみにくいかもしれませんが、問題ないです。「X軸とY軸で別々の焦点距離を持っておくと実際の画像データを扱うときに都合がいいんだな」程度に認識していただければ十分です。
+:eq:`pinhole_camera_model_divided_by_pixel_size` と :eq:`x_y_individual_focal_length` の間で置き換えられた部分を図で表現すると :numref:`pinhole_camera_equation_correspondence` のようになります。
+
+.. figure:: ../assets/pinhole_camera_equation_correspondence.png
+   :name: pinhole_camera_equation_correspondence
+   :width: 60%
+
+   数式のうち、置き換わった部分
+
+:eq:`x_y_individual_focal_length` に含まれる :math:`u,\;v,\;f_{x},\;f_{y},\;c_{x},\;c_{y}` のいずれもが **ピクセル** という単位で表現されています。:eq:`x_y_individual_focal_length` こそが我々が実用するうえで実際に用いるピンホールカメラモデルの式です。
 
 行列による表現
 ~~~~~~~~~~~~~~
@@ -212,20 +338,20 @@ XYで別々の焦点距離を使う
 最後に、ピンホールカメラモデルにおける作法のような表現方法があるので、その式を導出して締めくくることとします。以降の変形によって式をスッキリした形にしておくと、実際の3次元点を使った演算が非常に楽になるのです。
 
 
-まずは :eq:`introduction_of_image_offsets` をベクトルで表現して、両辺に :math:`Z` をかけます。
+まずは :eq:`x_y_individual_focal_length` をベクトルで表現して、両辺に :math:`Z` をかけます。
 
 .. math::
    Z \begin{bmatrix} u \\ v \\ \end{bmatrix}
    =
    Z
    \begin{bmatrix}
-   f \frac{X}{Z} + c_{x} \\
-   f \frac{Y}{Z} + c_{y} \\
+   f_{x} \frac{X}{Z} + c_{x} \\
+   f_{y} \frac{Y}{Z} + c_{y} \\
    \end{bmatrix} \\
    =
    \begin{bmatrix}
-   f X + c_{x}Z \\
-   f Y + c_{y}Z \\
+   f_{x} X + c_{x}Z \\
+   f_{y} Y + c_{y}Z \\
    \end{bmatrix} \\
 
 すると、これは次のように行列とベクトルの積で表現できます。
@@ -236,8 +362,8 @@ XYで別々の焦点距離を使う
    Z \begin{bmatrix} u \\ v \\ \end{bmatrix}
    =
    \begin{bmatrix}
-   f & 0 & c_{x} \\
-   0 & f & c_{y} \\
+   f_{x} & 0 & c_{x} \\
+   0 & f_{y} & c_{y} \\
    \end{bmatrix}
    \begin{bmatrix}
      X  \\ Y \\ Z
@@ -251,9 +377,9 @@ XYで別々の焦点距離を使う
    Z \begin{bmatrix} u \\ v \\ 1 \end{bmatrix}
    =
    \begin{bmatrix}
-   f & 0 & c_{x} \\
-   0 & f & c_{y} \\
-   0 & 0 & 1 \\
+   f_{x} & 0     & c_{x} \\
+   0     & f_{x} & c_{y} \\
+   0     & 0     & 1     \\
    \end{bmatrix}
    \begin{bmatrix}
      X  \\ Y \\ Z
@@ -273,9 +399,9 @@ XYで別々の焦点距離を使う
 
    K =
    \begin{bmatrix}
-   f & 0 & c_{x} \\
-   0 & f & c_{y} \\
-   0 & 0 & 1 \\
+   f_{x} & 0     & c_{x} \\
+   0     & f_{y} & c_{y} \\
+   0     & 0     & 1     \\
    \end{bmatrix}
 
 
@@ -297,9 +423,9 @@ XYで別々の焦点距離を使う
    Z \begin{bmatrix} u \\ v \\ 1 \end{bmatrix}
    =
    \begin{bmatrix}
-   f & 0 & c_{x} \\
-   0 & f & c_{y} \\
-   0 & 0 & 1 \\
+   f_{y} & 0     & c_{x} \\
+   0     & f_{x} & c_{y} \\
+   0     & 0     & 1     \\
    \end{bmatrix}
    \begin{bmatrix}
      X  \\ Y \\ Z
