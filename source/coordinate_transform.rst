@@ -247,6 +247,8 @@
     4   \\
    \end{bmatrix} \\
 
+たしかに、 :eq:`coordinate_transform_with_actual_values` で用いた回転行列と並進ベクトルと同じ値が出てきました。
+
 ワールド座標系とカメラ座標系という異なる2つの座標系を回転行列と並進ベクトルが関連付けているということがおわかりいただけたでしょうか？
 
 同次座標による表現
@@ -292,6 +294,8 @@
 具体例として :eq:`coordinate_transform_with_actual_values_non_homogeneous` を同次座標表現すると次のようになります。
 
 .. math::
+   :label: homogeneous_transform_with_actual_values
+
    \begin{bmatrix}
     X^{c}  \\
     Y^{c}  \\
@@ -310,7 +314,7 @@
     1      \\
    \end{bmatrix}
 
-たしかに、 :math:`X^{w},\;Y^{w},\;Z^{w}` にワールド座標系の座標値を入力すれば、たった1回の行列演算でカメラ座標系の値に変換できて便利ですね。
+たしかに、 :eq:`homogeneous_transform_with_actual_values` の :math:`X^{w},\;Y^{w},\;Z^{w}` にワールド座標系の座標値を入力すれば、たった1回の行列演算でカメラ座標系の値に変換できて便利ですね。
 
 .. math::
    \begin{bmatrix}
