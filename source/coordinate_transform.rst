@@ -38,7 +38,7 @@
 
 具体例を見てみましょう。 :numref:`vehicle_location_on_road` と :numref:`vehicle_side_view` を見てください。ワールド座標系とカメラ座標系を区別しやすいように、ワールド座標系の軸には右肩に :math:`w` を、カメラ座標系の軸には右肩に :math:`c` をつけています。ワールド座標系の位置や向きは基本的に地図の作成者が好きなように決めることができます。図中では停止線の位置を星マークで表現したので、これをワールド座標系とカメラ座標系でそれぞれ表現してみましょう。
 
-:numref:`vehicle_location_on_road` において、停止線の位置をワールド座標系で表現すると、 :math:`X^{w}` 方向に6メートル、:math:`Y^{w}` 方向に12メートルです。また、 :numref:`vehicle_side_view` より、停止線の位置は :math:`Z^{w}` 方向に0メートルです。すべて列挙すると、 :math:`X^{w} = 6,\;Y^{w} = 12,\; Z^{w} = 0` というふうになるでしょう。同様に、 カメラ座標系で停止線の位置を表現すると、 :numref:`vehicle_location_on_road` より :math:`X^{c}` 方向に0メートル、 :numref:`vehicle_side_view` より :math:`Y^{c}` 方向に1メートル、 :math:`Z^{c}` 方向に10メートルなので、 :math:`X^{c} = 0,\; Y^{c} = 1,\; Z^{c} = 10` となります。停止線という同じ物体を見ていても、基準となる座標系が変わることで全く別の値になることがわかっていただけでしょうか。見やすいよう、これらを :numref:`stop_line_location` にまとめました。
+:numref:`vehicle_location_on_road` において、停止線の位置をワールド座標系で表現すると、 :math:`X^{w}` 方向に6メートル、:math:`Y^{w}` 方向に12メートルです。また、 :numref:`vehicle_side_view` より、停止線の位置は :math:`Z^{w}` 方向に0メートルです。すべて列挙すると、 :math:`X^{w} = 6,\;Y^{w} = 12,\; Z^{w} = 0` というふうになるでしょう。同様に、 カメラ座標系で停止線の位置を表現すると、 :numref:`vehicle_location_on_road` より :math:`X^{c}` 方向に0メートル、 :numref:`vehicle_side_view` より :math:`Y^{c}` 方向に1メートル、 :math:`Z^{c}` 方向に10メートルなので、 :math:`X^{c} = 0,\; Y^{c} = 1,\; Z^{c} = 10` となります。停止線という同じ物体を見ていても、基準となる座標系が変わることで全く別の値になることがわかっていただけたでしょうか。見やすいよう、これらを :numref:`stop_line_location` にまとめました。
 
 .. table:: 各座標系からの停止線の位置
    :name: stop_line_location
