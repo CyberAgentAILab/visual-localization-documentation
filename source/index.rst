@@ -7,3 +7,4 @@ Visual Localization Documentation
 
    pinhole_camera_model
    coordinate_transform
+   projection_matrix
